@@ -13,7 +13,7 @@ sweeep株式会社エンジニアの関田です。
 簡単に紹介したいと思います。
 
 
-## 準備
+# 準備
 ArgoCDを使うにあたって以下の準備が必要になります。
 - デプロイ先クラスタ
 - マニフェストファイルを管理するGitリポジトリ
@@ -23,9 +23,9 @@ ArgoCDを使うにあたって以下の準備が必要になります。
 $ minikube start --driver=docker
 ```
 
-## インストール
+# デプロイ
 
-### ネームスペースの作成
+## ネームスペースの作成
 argocdをデプロイするためのネームスペースを作成します。
 ```
 $ kubectl create namespace argocd
@@ -36,7 +36,7 @@ $ kubectl create namespace argocd
 $ kubens argocd
 ```
 
-### ArgoCDのデプロイ
+## ArgoCDのデプロイ
 本番運用ではArgoCDのマニフェストファイル自体の管理・運用を行なったりしますが、
 今回は簡単にリモートにあるArgoCDのマニフェストを直接クラスタにデプロイします。
 
@@ -44,7 +44,7 @@ $ kubens argocd
 $ kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 ```
 
-### ブラウザで確認
+## ブラウザで確認
 次にデプロイしたArgoCDをブラウザ上で確認していきます。
 
 まず初めにデフォルトで設定されているユーザのパスワードを控えておきます。
@@ -75,7 +75,7 @@ http://localhost にアクセスして以下の情報を入力してログイン
 ![](/images/7afbee294aa6ce/argocd_dashboard.png)
 
 
-### リポジトリの登録
+## リポジトリの登録
 
 ArgoCDでは監視するマニフェストファイルがあるリポジトリとそのパス、デプロイ先クラスタとネームスペースなどを1つの組みとして、アプリケーションという単位で管理することができます。
 
@@ -94,7 +94,7 @@ User Info -> CONNECT REPO USING SSH
 :::
 
 
-### アプリケーションの登録
+## アプリケーションの登録
 
 次にアプリケーションを登録していきます。
 Manage your applications -> NEW APP
@@ -132,12 +132,26 @@ NEW APPを押した後の設定項目では以下のように入力します。
 
 ![](/images/7afbee294aa6ce/argocd_first_app.png)
 
+アプリケーションを押すとServiceやDeploymentの状態などを見ることができます。
 
-## 番外編
+![](/images/7afbee294aa6ce/argocd_app_detail.png)
 
-```bash
-$ argocd login --insecure localhost:80
-$ argocd repo add git@github.com:${USER}/${REPOSITORY_NAME}.git --ssh-private-key-path ~/.ssh/${PRIVATE_KEY}
-```
+## 自動デプロイ
 
-argocd repo add git@github.com:yu-sekita/sample-gitops-manifests-private.git --ssh-private-key-path ~/.ssh/github_key
+最後にマニフェストファイルを編集してGithubリポジトリにpushした時の挙動を確認するため、
+Pod数を3から1に変更してみます。
+
+少し時間が経つと以下のようにマニフェストファイルの定義通りに反映されます。
+
+![](/images/7afbee294aa6ce/argocd_app_detail_updated.png)
+
+
+# おわりに
+ArgoCDのインストールから自動デプロイまでを簡単に実施してみました。
+分かりやすくて使いやすいUIなので特に迷わずに使える感じがしました。
+ArgoCDには他にも機能がたくさんあるので、少しずつ触ってまた記事に残していこうと思います。
+また、ArgoCD以外のCDツールとの比較なども試していきたいです。
+
+
+最後に宣伝にはなりますが、sweeepでは一緒に働くエンジニアを募集しています！
+https://corp.sweeep.ai/recruit
