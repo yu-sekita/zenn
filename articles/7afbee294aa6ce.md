@@ -13,6 +13,10 @@ sweeep株式会社エンジニアの関田です。
 簡単に紹介したいと思います。
 
 
+ArgoCDのドキュメントはこちらになります。
+[Argo CD - Declarative GitOps CD for Kubernetes](https://argo-cd.readthedocs.io/en/stable)
+
+
 # 準備
 ArgoCDを使うにあたって以下の準備が必要になります。
 - デプロイ先クラスタ
